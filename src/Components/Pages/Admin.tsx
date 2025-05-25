@@ -24,16 +24,6 @@ function Admin() {
     useState<number>(-1);
   const [isLeftPanelOpen, setIsLeftPanelOpen] = useState(true);
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAl4IK7-O_oQ222BEKfrYdL62Awob-o2jk",
-    authDomain: "chatbot-a21da.firebaseapp.com",
-    projectId: "chatbot-a21da",
-    storageBucket: "chatbot-a21da.appspot.com",
-    messagingSenderId: "799650168123",
-    appId: "1:799650168123:web:796aef5aa352b2c19e4b1e",
-    measurementId: "G-8PFH7ED52T",
-  };
-
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getDatabase(app);
