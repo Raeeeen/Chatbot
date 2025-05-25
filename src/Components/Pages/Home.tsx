@@ -29,16 +29,6 @@ function Chat() {
   const inactivityTimeout = useRef<number | null>(null); // Ref to store the inactivity timeout
   const endOfMessagesRef = useRef<HTMLDivElement>(null); // Ref to scroll to the bottom
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAl4IK7-O_oQ222BEKfrYdL62Awob-o2jk",
-    authDomain: "chatbot-a21da.firebaseapp.com",
-    projectId: "chatbot-a21da",
-    storageBucket: "chatbot-a21da.appspot.com",
-    messagingSenderId: "799650168123",
-    appId: "1:799650168123:web:796aef5aa352b2c19e4b1e",
-    measurementId: "G-8PFH7ED52T",
-  };
-
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const realtimeDb = getDatabase(app);
@@ -82,7 +72,6 @@ function Chat() {
 
     try {
       // Compute embeddings for the user's question
-      const embeddingsResponse = await fetch(
         "https://api.openai.com/v1/embeddings",
         {
           method: "POST",
@@ -106,7 +95,6 @@ function Chat() {
       );
 
       if (similarQuestion) {
-        // Display the similar question's answer
         const botReply = {
           id: messages.length + 1,
           text: similarQuestion.answer,
@@ -114,10 +102,8 @@ function Chat() {
         };
         setMessages((prevMessages) => [...prevMessages, botReply]);
 
-        // Update the recent question ID context
         setRecentQuestionId(similarQuestion.id);
       } else {
-        // Generate a response using GPT-3.5 Turbo
         const gptMessages = messages.map((msg) => ({
           role: msg.sender === "AI" ? "assistant" : "user",
           content: msg.text,
@@ -140,7 +126,6 @@ function Chat() {
         );
         const data = await response.json();
 
-        // Store the new question and its response
         const newQuestionId = await storeQuestion(
           userQuestion,
           data.choices[0].message.content,
@@ -157,7 +142,6 @@ function Chat() {
         };
         setMessages((prevMessages) => [...prevMessages, botReply]);
 
-        // Update the recent question ID context
         setRecentQuestionId(newQuestionId);
         if (mainQuestionId === null) {
           setMainQuestionId(newQuestionId);
