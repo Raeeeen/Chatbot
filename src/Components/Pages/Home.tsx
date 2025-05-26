@@ -21,13 +21,13 @@ function Chat() {
   const [newMessage, setNewMessage] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [currentUserName, setCurrentUserName] = useState(""); // State to store the current user's name
+  const [currentUserName, setCurrentUserName] = useState("");
   const [recentQuestionId, setRecentQuestionId] = useState<string | null>(null);
   const [mainQuestionId, setMainQuestionId] = useState<string | null>(null);
   const [expectingFollowUp, setExpectingFollowUp] = useState(false);
   const navigate = useNavigate();
-  const inactivityTimeout = useRef<number | null>(null); // Ref to store the inactivity timeout
-  const endOfMessagesRef = useRef<HTMLDivElement>(null); // Ref to scroll to the bottom
+  const inactivityTimeout = useRef<number | null>(null); 
+  const endOfMessagesRef = useRef<HTMLDivElement>(null); 
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -51,7 +51,6 @@ function Chat() {
       }
     });
 
-    // Clean up subscription on unmount
     return () => unsubscribe();
   }, [auth, realtimeDb, navigate]);
 
@@ -88,7 +87,6 @@ function Chat() {
       const embeddingsData = await embeddingsResponse.json();
       const embeddings = embeddingsData.data[0].embedding;
 
-      // Check for similar questions
       const similarQuestion = await findSimilarQuestion(
         embeddings,
         mainQuestionId
@@ -134,7 +132,6 @@ function Chat() {
           mainQuestionId
         );
 
-        // Display the GPT-3.5 Turbo response
         const botReply = {
           id: messages.length + 1,
           text: data.choices[0].message.content,
@@ -154,7 +151,6 @@ function Chat() {
       setNewMessage("");
       setExpectingFollowUp(true);
       resetInactivityTimeout();
-      // Scroll to the bottom
       endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   };
@@ -189,13 +185,12 @@ function Chat() {
       ? child(questionsRef, `${mainQuestionId}/followups`)
       : questionsRef;
 
-    // Check for similarity to avoid duplicates
     const similarQuestion = await findSimilarQuestion(
       embeddings,
       mainQuestionId
     );
     if (similarQuestion) {
-      return null; // Return null if the question already exists
+      return null; 
     }
 
     const newQuestionRef = isFollowUp ? push(questionRef) : push(questionsRef);
@@ -267,7 +262,7 @@ function Chat() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      setCurrentUserName(""); // Clear the current user's name on logout
+      setCurrentUserName(""); 
       navigate("/signin");
     } catch (error) {
       console.error("Error signing out:", error);
@@ -299,7 +294,7 @@ function Chat() {
       setExpectingFollowUp(false);
     } else if (response.toLowerCase() === "new topic") {
       setRecentQuestionId(null);
-      setMainQuestionId(null); // Reset the main question ID for new topics
+      setMainQuestionId(null); 
       setExpectingFollowUp(false);
     }
   };
@@ -417,7 +412,7 @@ function Chat() {
             )}
           </div>
         ))}
-        {/* Display "typing..." message while waiting for response */}
+
         {isTyping && (
           <div className="flex justify-start items-center text-black">
             <img src={BotIcon} alt="Typing icon" className="h-8 w-8 mr-2" />
@@ -451,7 +446,6 @@ function Chat() {
             </div>
           </div>
         )}
-        {/* End of Messages Ref */}
         <div ref={endOfMessagesRef} />
       </div>
       {/* User input */}
