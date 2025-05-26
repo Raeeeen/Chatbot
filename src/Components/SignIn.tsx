@@ -16,19 +16,9 @@ import "react-toastify/dist/ReactToastify.css";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false); 
   const [googleClicked, setGoogleClicked] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAl4IK7-O_oQ222BEKfrYdL62Awob-o2jk",
-    authDomain: "chatbot-a21da.firebaseapp.com",
-    projectId: "chatbot-a21da",
-    storageBucket: "chatbot-a21da.appspot.com",
-    messagingSenderId: "799650168123",
-    appId: "1:799650168123:web:796aef5aa352b2c19e4b1e",
-    measurementId: "G-8PFH7ED52T",
-  };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -36,8 +26,8 @@ function SignIn() {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isButtonDisabled) return; // Prevent login if button is disabled
-    setIsButtonDisabled(true); // Disable the button
+    if (isButtonDisabled) return; 
+    setIsButtonDisabled(true); 
 
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -66,7 +56,7 @@ function SignIn() {
       console.error("Error signing in:", error.message);
       toast.error(error.message);
     } finally {
-      setTimeout(() => setIsButtonDisabled(false), 5000); // Re-enable the button after 5 seconds
+      setTimeout(() => setIsButtonDisabled(false), 5000); 
     }
   };
 
@@ -75,8 +65,8 @@ function SignIn() {
   };
 
   const handleGoogleClick = async () => {
-    if (isButtonDisabled) return; // Prevent login if button is disabled
-    setIsButtonDisabled(true); // Disable the button
+    if (isButtonDisabled) return; 
+    setIsButtonDisabled(true); 
 
     setGoogleClicked(true);
     try {
@@ -100,7 +90,7 @@ function SignIn() {
       console.error("Error signing in with Google:", error.message);
       toast.error("Error signing in with Google. Please try again.");
     } finally {
-      setTimeout(() => setIsButtonDisabled(false), 5000); // Re-enable the button after 5 seconds
+      setTimeout(() => setIsButtonDisabled(false), 5000); 
     }
   };
 
@@ -152,7 +142,7 @@ function SignIn() {
                 onClick={togglePasswordVisibility}
               >
                 <img
-                  src={showPassword ? HidePass : ShowPass} // Use ShowPass and HidePass variables
+                  src={showPassword ? HidePass : ShowPass} 
                   alt={showPassword ? "Hide Password" : "Show Password"}
                   className="h-5 w-5"
                 />
