@@ -38,7 +38,6 @@ function Admin() {
       try {
         const usersRef = ref(db, "users");
 
-        // Listen for changes to the data
         onValue(usersRef, (snapshot) => {
           if (snapshot.exists()) {
             const usersData: UserData[] = [];
@@ -62,10 +61,8 @@ function Admin() {
       }
     };
 
-    // Call the retrieveUsersData function
     retrieveUsersData();
 
-    // Cleanup function
   }, [db]);
 
   useEffect(() => {
@@ -75,7 +72,6 @@ function Admin() {
       try {
         const questionsRef = ref(db, "questions");
 
-        // Listen for changes to the data
         onValue(questionsRef, (snapshot) => {
           const questionsData = snapshot.val();
           if (questionsData) {
@@ -94,7 +90,6 @@ function Admin() {
 
     retrieveUserQuestions();
 
-    // Cleanup function to unsubscribe from the listener when component unmounts or dependencies change
     return () => {};
   }, [db, selectedUser]);
 
@@ -122,7 +117,7 @@ function Admin() {
   const handleUserSelect = (userData: User) => {
     setSelectedUser(userData);
     setSelectedQuestionIndex(-1);
-    setMessages([]); // Clear messages when selecting a new user
+    setMessages([]); 
   };
 
   const handleQuestionSelect = (index: number) => {
@@ -142,12 +137,10 @@ function Admin() {
       const existingData = snapshot.val();
 
       if (existingData) {
-        // Get the current timestamp and timezone
         const currentDate = new Date();
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const userid = auth.currentUser?.uid;
 
-        // Format the date and time
         const formattedDate = currentDate.toLocaleString("en-US", {
           month: "short",
           day: "numeric",
@@ -155,18 +148,16 @@ function Admin() {
           hour: "numeric",
           minute: "numeric",
           hour12: true,
-          timeZone: timeZone, // Set the timezone
+          timeZone: timeZone, 
         });
 
-        // Update the bot's answer, timestamp, and userId while keeping embeddings intact
         await set(questionRef, {
-          ...existingData, // Keep existing data including embeddings
+          ...existingData, 
           pollonAnswer: newBotAnswer,
           timestamp: formattedDate,
           userId: userid,
         });
 
-        // Update the local state to reflect the changes
         setNewBotAnswer("");
       } else {
         console.log("Question not found:", question);
@@ -176,7 +167,6 @@ function Admin() {
     }
   };
 
-  // Function to handle logout
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -187,7 +177,6 @@ function Admin() {
       });
   };
 
-  // Render UI
   return (
     <div className="flex h-screen">
       {/* Left Panel */}
